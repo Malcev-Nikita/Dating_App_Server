@@ -1,54 +1,32 @@
 const express = require('express');
-const connectDB = require('./config/db');
-const formData = require('express-form-data');
-
-require('colors');
-require('dotenv').config();
-
-const userRoutes = require('./routes/userRoutes.js');
-const newsRoutes = require('./routes/newsRoute.js');
-const categoryRoutes = require('./routes/categoryRoute');
-
-
 const morgan = require('morgan');
-
-
-
-connectDB();
+const mongoose = require('mongoose');
+const methodOverride = require('method-override');
+const userRouter = require('./routes/api-users');
 
 const app = express();
 
-app.use(formData.parse());
+const PORT = 3000;
+const db = 'mongodb://gen_user:xajlqr88m9@188.225.46.230:27017/default_db?authSource=admin&directConnection=true';
 
-if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev'));
-}
+mongoose
+    .set("strictQuery", false)
+    .connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then((res) => console.log('Connected to DB'))
+    .catch((error) => console.log(error));
 
-app.use(express.json());
-app.use(express.urlencoded({extended: false}));
-
-// app.use(express.json({limit: '50mb'}));
-// app.use(express.urlencoded({limit: '50mb'}));
-
-
-app.use('/api/users', userRoutes);
-app.use('/api/news', newsRoutes);
-app.use('/api/category', categoryRoutes);
-
-app.get('*', function(req, res){
-  res.status(404).json({
-    msg: "Api path not found."
-  });
+app.listen(PORT, (error) => {
+  error ? console.log(error) : console.log(`listening port ${PORT}`);
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(
-  PORT,
-  console.log(
-    `Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.red,
-  ),
-);
+app.use(express.urlencoded({ extended: false }));
 
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
 
+app.use(methodOverride('_method'));
 
-// hosted server https://news-app-native.herokuapp.com/
+app.use(userRouter);
+
+app.use((req, res) => {
+    console.log("Error")
+});
