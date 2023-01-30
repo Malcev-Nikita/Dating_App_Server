@@ -1,32 +1,31 @@
 const express = require('express');
-const morgan = require('morgan');
-const mongoose = require('mongoose');
-const methodOverride = require('method-override');
-const userRouter = require('./routes/api-users');
+const path = require('path')
 
 const app = express();
 
-const PORT = 3000;
-const db = 'mongodb://gen_user:xajlqr88m9@188.225.46.230:27017/default_db?authSource=admin&directConnection=true';
 
-mongoose
-    .set("strictQuery", false)
-    .connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then((res) => console.log('Connected to DB'))
-    .catch((error) => console.log(error));
+// Отдаем стандартную фавиконку, можем здесь же свою задать
+// app.use(express.favicon());
 
-app.listen(PORT, (error) => {
-  error ? console.log(error) : console.log(`listening port ${PORT}`);
+// Выводим все запросы со статусами в консоль
+// app.use(express.logger('dev')); 
+
+// Стандартный модуль, для парсинга JSON в запросах
+// app.use(express.bodyParser()); 
+
+// Поддержка put и delete
+// app.use(express.methodOverride()); 
+
+// Модуль для простого задания обработчиков путей
+// app.use(app.router); 
+
+// Запуск статического файлового сервера, который смотрит на папку public/ (в нашем случае отдает index.html)
+app.use(express.static(path.join(__dirname, "public"))); 
+
+app.get('/api', (req, res) => {
+    res.send('API is running');
 });
 
-app.use(express.urlencoded({ extended: false }));
-
-app.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
-
-app.use(methodOverride('_method'));
-
-app.use(userRouter);
-
-app.use((req, res) => {
-    console.log("Error")
-});
+app.listen(process.env.PORT_SERVER, (error) => {
+  error ? console.log('Error') : console.log("Сервер запущен");
+})
