@@ -24,13 +24,10 @@
     "nodemon": "^2.0.20"
   },
   "dependencies": {
-<<<<<<< HEAD
-    "dotenv": "^16.0.3"
-=======
+    "dotenv": "^16.0.3",
     "mongoose": "^6.9.0",
     "nconf": "^0.12.0",
     "serve-favicon": "^2.5.0",
     "winston": "^3.8.2"
->>>>>>> 618616a22ad79d19ea2adc93a5ebb9d74a4cdc7b
   }
 }
