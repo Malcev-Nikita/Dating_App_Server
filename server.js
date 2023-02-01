@@ -1,32 +1,21 @@
-const express = require('express');
-const morgan = require('morgan');
-const mongoose = require('mongoose');
-const methodOverride = require('method-override');
-const userRouter = require('./routes/api-users');
+const express = require("express");
+const bodyParser = require("body-parser");
+const env = require('dotenv').config();
 
 const app = express();
 
-const PORT = 3000;
-const db = 'mongodb://gen_user:xajlqr88m9@188.225.46.230:27017/default_db?authSource=admin&directConnection=true';
+//делаем наш парсинг в формате json
+app.use(bodyParser.json());
 
-mongoose
-    .set("strictQuery", false)
-    .connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then((res) => console.log('Connected to DB'))
-    .catch((error) => console.log(error));
+// парсит запросы по типу: application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }));
 
-app.listen(PORT, (error) => {
-  error ? console.log(error) : console.log(`listening port ${PORT}`);
+//  простой response - request
+app.get("/", (req, res) => {
+  res.json({ message: "API" });
 });
 
-app.use(express.urlencoded({ extended: false }));
-
-app.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
-
-app.use(methodOverride('_method'));
-
-app.use(userRouter);
-
-app.use((req, res) => {
-    console.log("Error")
+// установить порт, и слушать запросы
+app.listen(process.env.PORT_SERVER, () => {
+  console.log(`Сервер запущен ${process.env.PORT_SERVER} на порту`);
 });

@@ -18,12 +18,12 @@
   },
   "homepage": "https://github.com/Malcev-Nikita/Dating_App_Server#readme",
   "devDependencies": {
+    "body-parser": "^1.20.1",
     "express": "^4.18.2",
-    "method-override": "^3.0.0",
-    "morgan": "^1.10.0",
+    "mysql": "^2.18.1",
     "nodemon": "^2.0.20"
   },
   "dependencies": {
-    "mongoose": "^6.9.0"
+    "dotenv": "^16.0.3"
   }
 }
