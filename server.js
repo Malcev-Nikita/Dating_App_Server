@@ -1,21 +1,20 @@
 const express = require("express");
-const bodyParser = require("body-parser");
-const env = require('dotenv').config();
-
 const app = express();
+const env = require('dotenv').config();
+const bodyParser = require('body-parser');
+const routes = require('./routes/users.routes')
 
-//делаем наш парсинг в формате json
+
 app.use(bodyParser.json());
 
-// парсит запросы по типу: application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+    extended: true,
+}));
 
-//  простой response - request
-app.get("/", (req, res) => {
-  res.json({ message: "API" });
-});
+routes(app);
 
-// установить порт, и слушать запросы
-app.listen(process.env.PORT_SERVER, () => {
-  console.log(`Сервер запущен ${process.env.PORT_SERVER} на порту`);
+const server = app.listen(process.env.PORT_SERVER, (error) => {
+    if (error) return console.log(`Error: ${error}`);
+
+    console.log(`Server listening on port ${process.env.PORT_SERVER}`);
 });
