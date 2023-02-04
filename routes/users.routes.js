@@ -2,15 +2,15 @@ const controller = require('../controllers/users.controller')
 
 const router = app => {
 
-    app.get('/users', controller.getAllUser);
+    app.get('/api/users', controller.getAllUser);
 
-    app.get('/users/:id', controller.getUserById);
+    app.get('/api/users/:id', controller.getUserById);
 
-    app.post('/users', controller.postNewUser);
+    app.post('/api/users', controller.postNewUser);
 
-    app.put('/users/:id', controller.putUserById);
+    app.put('/api/users/:id', controller.putUserById);
 
-    app.delete('/users/:id', controller.deleteUserById);
+    app.delete('/api/users/:id', controller.deleteUserById);
 }
 
 module.exports = router;

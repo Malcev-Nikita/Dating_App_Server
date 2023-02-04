@@ -20,7 +20,7 @@ const getUserById = (request, response) => {
 }
 
 const postNewUser = (request, response) => {
-    connection.query('INSERT INTO users SET ?', request.body, (error, result) => {
+    connection.query('INSERT INTO users VALUES ?', request.body, (error, result) => {
         if (error) throw error;
 
         response.status(201).send(`User added with ID: ${result.insertId}`);
